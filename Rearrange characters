@@ -2,30 +2,52 @@
     {
     	// Your code here
     	int n=str.size();
+     // Counting the frequency of each letter of given string.
+     
     	unordered_map<char,int> ma;
     	for(int i=0;i<n;i++){
     	    ma[str[i]]++;
     	}
+     
+     //Making a max heap to have greatest occuring letter at top.
     	priority_queue<pair<int,char>>p;
+     
+     //Pushing each letter with their frequency using pair.
     	for(auto it=ma.begin();it!=ma.end();it++){
     	    p.push({it->second,it->first});
     	}
+     
+     //Checking the condition that if the most occuring letter is greater than n/2 then never we can rearrange letters.
     	if(p.top().first>ceil(n/2))
     	return "-1";
+     
+     //Making a empty string to store the answer.
     	string res="";
+     
+     //Running the loop till each letter of the heap is traversed.
     	while(n>1){
+     //Taking top element in val1
     	    pair<int,char>val1=p.top();
     	    p.pop();
+     //Taking second most occuring in val2
     	    pair<int,char>val2=p.top();
     	    p.pop();
+         
+         //adding them one by one to answer(res)
     	    res+=val1.second;
     	    res+=val2.second;
+         
+         //Checking if the frequency is greater than 0,then push it back.
     	    if(val1.first-1>0)
     	    p.push({val1.first-1,val1.second});
     	    if(val2.first-1>0)
     	    p.push({val2.first-1,val2.second});
+         
+         //Since two elements are taken at a time so doing n=n-2
     	    n-=2;
     	}
+     
+     //If the string size is odd, then might be 1 letter left in heap because 2 letters are subtracted (for eg: n=5 -> n=3 -> n=1)
     	if(n==1)
     	res+=p.top().second;
     	
